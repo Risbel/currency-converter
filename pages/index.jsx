@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const index = () => {
-  return (
-    <div className='text-red-500'>My exchange rate calculator</div>
-  )
-}
+  return <div className="text-red-500">My exchange rate calculator</div>;
+};
 
-export default index
+export default index;
