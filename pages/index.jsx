@@ -1,7 +1,11 @@
-import React from "react";
-
-const index = () => {
-  return <div className="text-red-500">My exchange rate calculator</div>;
+const Home = () => {
+  return (
+    <div>
+      <div className="text-red-500 text-center">
+        My exchange rate calculator
+      </div>
+    </div>
+  );
 };
 
-export default index;
+export default Home;

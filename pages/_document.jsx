@@ -7,7 +7,7 @@ class MyDocument extends Document {
         <Head></Head>
 
         <body>
-          <div className="bg-zinc-400">
+          <div>
             <Main />
             <NextScript />
           </div>
