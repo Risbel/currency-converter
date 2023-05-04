@@ -1,10 +1,15 @@
+import LayoutPages from "../layouts/layoutPages";
+
 const Home = () => {
   return (
-    <div>
-      <div className="text-red-500 text-center">
-        My exchange rate calculator
-      </div>
-    </div>
+    <LayoutPages>
+      <section>
+        <div className="flex flex-col items-center gap-8 mt-8">
+          <h1>My exchange rate calculator</h1>
+          <p>This is an exchange rate calculator for the company Fonoma.</p>
+        </div>
+      </section>
+    </LayoutPages>
   );
 };
 
