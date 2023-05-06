@@ -16,27 +16,11 @@ const classes = clsx.bind({
   xl: "py-4 px-8",
 });
 
-const Button = ({
-  variant,
-  size,
-  disabled,
-  className,
-  submit,
-  isLoading,
-  children,
-  ...props
-}) => {
+const Button = ({ variant, size, disabled, className, submit, isLoading, children, ...props }) => {
   return (
     <button
       type={submit ? "submit" : "button"}
-      className={classes(
-        "root",
-        variant,
-        !disabled && "animated",
-        size,
-        disabled && "disabled",
-        className
-      )}
+      className={classes("root", variant, !disabled && "animated", size, disabled && "disabled", className)}
       {...props}
     >
       <div className="w-auto flex items-center gap-2">
@@ -48,7 +32,7 @@ const Button = ({
 };
 
 Button.propTypes = {
-  variant: PropTypes.oneOf(["primary", "secondary"]),
+  variant: PropTypes.oneOf(["primary", "secundary"]),
   size: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
   submit: PropTypes.bool,
   isLoading: PropTypes.bool,
