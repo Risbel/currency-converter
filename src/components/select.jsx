@@ -8,9 +8,10 @@ const classes = clsx.bind({
   primary: "text-slate-800 bg-slate-300 border border-none",
   secundary: "text-slate-100 bg-slate-800",
   animated: "text-slate-800 bg-slate-300 hover:bg-slate-100 hover:shadow-xl",
+  sm: "w-3/5 md:w-2/5 lg:w-1/5 h-6",
   md: "w-3/4 md:w-3/5 lg:w-1/4 h-8",
-  lg: "w-full md:w-3/4 lg:w-1/2 h-8",
-  xl: "w-full md:w-3/4 lg:w-1/2 h-10 text-2xl",
+  lg: "w-full md:w-3/4 lg:w-1/3 h-10",
+  xl: "w-full md:w-4/5 lg:w-1/2 h-14 text-2xl",
 });
 
 const Select = ({ children, variant, size, className, ...props }) => {

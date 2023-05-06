@@ -26,7 +26,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-slate-900">
+    <nav className="fixed w-screen z-40 bg-slate-900">
       <div className="flex justify-center md:justify-between px-8 py-1">
         <Link className="hidden md:flex flex-shrink-0 items-center gap-2" href="/">
           <span className="text-white font-bold text-2xl">Home</span>

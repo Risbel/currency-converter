@@ -2,6 +2,7 @@ import React from "react";
 import LayoutPage from "../layouts/layoutPage";
 import useGetSymbols from "../lib/hooks/useGetSymbols";
 import Select from "../components/select";
+import Input from "../components/input";
 
 const exchange = () => {
   const { isLoading, data, isError, error } = useGetSymbols();
@@ -12,11 +13,13 @@ const exchange = () => {
         <h1>Exchange Rate Calculator</h1>
       </div>
       <div className="flex flex-col items-center mt-10">
+        <h2>Amount</h2>
+        <Input />
         <h2>From</h2>
         <Select>
           {data &&
             Object.keys(data.symbols).map((symbol) => (
-              <option key={symbol} value={symbol}>
+              <option className="text-xs md:text-lg" key={symbol} value={symbol}>
                 {`${symbol}: ${data.symbols[symbol]}`}
               </option>
             ))}
