@@ -17,7 +17,7 @@ const Store = () => {
       <h1>My buttons</h1>
       <SectionContainer>
         <Button>Push me</Button>
-        <Button variant="secundary">Push me</Button>
+        <Button variant="secondary">Push me</Button>
         <Button disabled>Push me</Button>
         <Button size="sm">Push me</Button>
         <Button size="lg">Push me</Button>
@@ -32,7 +32,7 @@ const Store = () => {
           <option value="select me">select me 1</option>
           <option value="select me">select me 2</option>
         </Select>
-        <Select variant="secundary">
+        <Select variant="secondary">
           <option value="select me">select me 1</option>
           <option value="select me">select me 2</option>
         </Select>
@@ -49,7 +49,7 @@ const Store = () => {
       <h1>My inputs</h1>
       <SectionContainer>
         <Input size="sm" />
-        <Input variant="secundary" />
+        <Input variant="secondary" />
         <Input size="lg" />
         <Input size="xl" />
       </SectionContainer>

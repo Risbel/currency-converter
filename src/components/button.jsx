@@ -8,7 +8,7 @@ const classes = clsx.bind({
   root: "rounded-md font-semibold",
   animated: "transition-shadow hover:shadow-xl active:opacity-90",
   primary: "text-slate-300 bg-gray-800 border border-gray-600",
-  secundary: "text-slate-900 bg-gray-200",
+  secondary: "text-slate-900 bg-gray-200",
   disabled: "bg-gray-700 opacity-60",
   sm: "px-1 py-1 text-xs font-light",
   md: "py-2 px-4",
@@ -31,7 +31,7 @@ const Button = ({ variant, size, disabled, className, submit, isLoading, childre
 };
 
 Button.propTypes = {
-  variant: PropTypes.oneOf(["primary", "secundary"]),
+  variant: PropTypes.oneOf(["primary", "secondary"]),
   size: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
   isLoading: PropTypes.bool,
   className: PropTypes.string,

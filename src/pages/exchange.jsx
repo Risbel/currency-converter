@@ -1,4 +1,5 @@
 import React from "react";
+
 import LayoutPage from "../layouts/layoutPage";
 import Select from "../components/select";
 import Input from "../components/input";
@@ -44,6 +45,14 @@ const exchange = () => {
     }
   }
 
+  const currencySymbols = [];
+  const nameSymbols = [];
+
+  Object.entries(data.symbols).forEach(([symbol, name]) => {
+    currencySymbols.push(symbol);
+    nameSymbols.push(name);
+  });
+
   return (
     <LayoutPage>
       <div className="text-center">
@@ -52,37 +61,35 @@ const exchange = () => {
       <form className="flex flex-col items-center mt-10" onSubmit={handleSubmit(convert)}>
         <label>Amount</label>
         <Controller
+          defaultValue=""
           name="amount"
           control={control}
-          rules={{ required: true }}
-          render={({ field }) => <Input {...field} autoComplete="off" placeholder="Insert amount" ref={field.ref} />}
+          render={({ field: { value, onChange } }) => (
+            <Input value={value} onChange={onChange} type="number" placeholder="Insert amount" autoComplete="off" />
+          )}
         />
         <label>From</label>
         <Controller
+          defaultValue={currencySymbols[36]}
           name="from"
           control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Select {...field} ref={field.ref}>
-              {Object.entries(data.symbols).map(([symbol, name]) => (
-                <option className="text-xs md:text-lg" key={symbol} value={symbol}>
-                  {`${symbol}: ${name}`}
-                </option>
+          render={({ field: { value, onChange } }) => (
+            <Select value={value} onChange={onChange}>
+              {currencySymbols.map((symbol, index) => (
+                <option key={symbol}>{`${symbol}: ${nameSymbols[index]}`}</option>
               ))}
             </Select>
           )}
         />
         <label>To</label>
         <Controller
+          defaultValue={currencySymbols[150]}
           name="to"
           control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <Select {...field} ref={field.ref}>
-              {Object.entries(data.symbols).map(([symbol, name]) => (
-                <option key={symbol} value={symbol}>
-                  {`${symbol}: ${name}`}
-                </option>
+          render={({ field: { value, onChange } }) => (
+            <Select value={value} onChange={onChange}>
+              {currencySymbols.map((symbol, index) => (
+                <option key={symbol}>{`${symbol}: ${nameSymbols[index]}`}</option>
               ))}
             </Select>
           )}
