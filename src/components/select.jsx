@@ -14,13 +14,13 @@ const classes = clsx.bind({
   xl: "w-full md:w-4/5 lg:w-1/2 h-14 text-2xl",
 });
 
-const Select = ({ children, variant, size, className, ...props }) => {
+const Select = React.forwardRef(({ children, variant, size, className, ...props }, ref) => {
   return (
-    <select className={classes("root", variant, size, className)} {...props} name="Select symbols">
+    <select className={classes("root", variant, size, className)} {...props} name="Select symbols" ref={ref}>
       {children}
     </select>
   );
-};
+});
 
 Select.propTypes = {
   variant: PropTypes.oneOf(["primary", "secundary", "animated"]),

@@ -19,7 +19,6 @@ const classes = clsx.bind({
 const Button = ({ variant, size, disabled, className, submit, isLoading, children, ...props }) => {
   return (
     <button
-      type={submit ? "submit" : "button"}
       className={classes("root", variant, !disabled && "animated", size, disabled && "disabled", className)}
       {...props}
     >
@@ -34,7 +33,6 @@ const Button = ({ variant, size, disabled, className, submit, isLoading, childre
 Button.propTypes = {
   variant: PropTypes.oneOf(["primary", "secundary"]),
   size: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
-  submit: PropTypes.bool,
   isLoading: PropTypes.bool,
   className: PropTypes.string,
   disabled: PropTypes.bool,
@@ -43,7 +41,6 @@ Button.propTypes = {
 Button.defaultProps = {
   variant: "primary",
   size: "md",
-  submit: false,
   isLoading: false,
   disabled: false,
   className: null,

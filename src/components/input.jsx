@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import clsx from "classnames/bind";
 
 const classes = clsx.bind({
-  root: "rounded-md font-semibold pl-2",
+  root: "rounded-md text-center font-semibold",
   primary: "text-slate-900 bg-gray-200 border border-gray-600",
   secundary: "text-slate-300 bg-gray-800",
   sm: "w-3/5 md:w-2/5 lg:w-1/5 h-6",
@@ -13,9 +13,9 @@ const classes = clsx.bind({
   xl: "w-full md:w-4/5 lg:w-1/2 h-14 text-3xl",
 });
 
-const Input = ({ variant, size, className, ...props }) => {
-  return <input className={classes("root", variant, size, className)} {...props} type="number" />;
-};
+const Input = React.forwardRef(({ variant, size, className, ...props }, ref) => {
+  return <input className={classes("root", variant, size, className)} {...props} ref={ref} />;
+});
 
 Input.propTypes = {
   variant: PropTypes.oneOf(["primary", "secundary"]),
