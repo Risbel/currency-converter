@@ -1,5 +1,3 @@
-import React from "react";
-
 import LayoutPage from "../layouts/layoutPage";
 import Select from "../components/select";
 import Input from "../components/input";
@@ -7,10 +5,12 @@ import Button from "../components/button";
 import Spinner from "../components/spinner";
 
 import useGetSymbols from "../lib/hooks/useGetSymbols";
+import getConversion from "../services/getConversion";
 
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useGetConversion from "../lib/hooks/useGetConversion";
 
 const schema = z.object({
   amount: z.string().nonempty("Required"),
@@ -19,16 +19,24 @@ const schema = z.object({
 });
 
 const exchange = () => {
-  const { isLoading, data, isError, error } = useGetSymbols();
+  const {
+    isLoading: isLoadingCurrency,
+    data: dataCurrency,
+    isError: isErrorCurrency,
+    error: errorCurrency,
+  } = useGetSymbols();
+
+  const {
+    isFetching: isFetchingAmount,
+    data: dataAcount,
+    isError: isErrorAcount,
+    error: errorAcount,
+  } = useGetConversion();
 
   const { handleSubmit, control } = useForm({ resolver: zodResolver(schema) });
 
-  const convert = (formData) => {
-    console.log("This is the amount to convert:", formData);
-  };
-
   {
-    if (isLoading) {
+    if (isLoadingCurrency) {
       return (
         <LayoutPage>
           <div className="flex justify-center mt-16">
@@ -36,10 +44,10 @@ const exchange = () => {
           </div>
         </LayoutPage>
       );
-    } else if (isError) {
+    } else if (isErrorCurrency) {
       return (
         <LayoutPage>
-          <div className="text-red-700 text-xl text-center">{error.message}</div>
+          <div className="text-red-700 text-xl text-center">{errorCurrency.message}</div>
         </LayoutPage>
       );
     }
@@ -48,17 +56,21 @@ const exchange = () => {
   const currencySymbols = [];
   const nameSymbols = [];
 
-  Object.entries(data.symbols).forEach(([symbol, name]) => {
+  Object.entries(dataCurrency.symbols).forEach(([symbol, name]) => {
     currencySymbols.push(symbol);
     nameSymbols.push(name);
   });
+
+  const onSubmit = (formData) => {
+    getConversion(formData);
+  };
 
   return (
     <LayoutPage>
       <div className="text-center">
         <h1>Exchange Rate Calculator</h1>
       </div>
-      <form className="flex flex-col items-center mt-10" onSubmit={handleSubmit(convert)}>
+      <form className="flex flex-col items-center mt-10" onSubmit={handleSubmit(onSubmit)}>
         <label>Amount</label>
         <Controller
           defaultValue=""
@@ -70,7 +82,7 @@ const exchange = () => {
         />
         <label>From</label>
         <Controller
-          defaultValue={currencySymbols[36]}
+          defaultValue={`${currencySymbols[36]}: ${nameSymbols[36]}`}
           name="from"
           control={control}
           render={({ field: { value, onChange } }) => (
@@ -83,7 +95,7 @@ const exchange = () => {
         />
         <label>To</label>
         <Controller
-          defaultValue={currencySymbols[150]}
+          defaultValue={`${currencySymbols[150]}: ${nameSymbols[150]}`}
           name="to"
           control={control}
           render={({ field: { value, onChange } }) => (
@@ -98,6 +110,7 @@ const exchange = () => {
           Convert
         </Button>
       </form>
+      {/* {isFetchingAmount ? <Spinner size="xl" /> : <h2>{dataAcount.result}</h2>} */}
     </LayoutPage>
   );
 };
