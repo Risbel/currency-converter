@@ -5,20 +5,23 @@ import Button from "../components/button";
 import Spinner from "../components/spinner";
 
 import useGetSymbols from "../lib/hooks/useGetSymbols";
-import getConversion from "../services/getConversion";
+import useGetConversion from "../lib/hooks/useGetConversion";
 
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useGetConversion from "../lib/hooks/useGetConversion";
+
+import { useState } from "react";
 
 const schema = z.object({
-  amount: z.string().nonempty("Required"),
+  amount: z.string().nonempty("Insert the amount please!"),
   from: z.string().nonempty("Required"),
   to: z.string().nonempty("Required"),
 });
 
-const exchange = () => {
+const Exchange = () => {
+  const [getConversionParams, setGetConversionParams] = useState(null);
+
   const {
     isLoading: isLoadingCurrency,
     data: dataCurrency,
@@ -26,14 +29,16 @@ const exchange = () => {
     error: errorCurrency,
   } = useGetSymbols();
 
-  const {
-    isFetching: isFetchingAmount,
-    data: dataAcount,
-    isError: isErrorAcount,
-    error: errorAcount,
-  } = useGetConversion();
+  const conversionEnabled = !!getConversionParams;
+  const { data: dataConversion, isLoading: isLoadingConversion } = useGetConversion(getConversionParams, {
+    enabled: Boolean(getConversionParams),
+  });
 
-  const { handleSubmit, control } = useForm({ resolver: zodResolver(schema) });
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(schema) });
 
   {
     if (isLoadingCurrency) {
@@ -53,16 +58,13 @@ const exchange = () => {
     }
   }
 
-  const currencySymbols = [];
-  const nameSymbols = [];
-
-  Object.entries(dataCurrency.symbols).forEach(([symbol, name]) => {
-    currencySymbols.push(symbol);
-    nameSymbols.push(name);
-  });
+  const currencies = Object.entries(dataCurrency.symbols).map(([symbol, name]) => ({
+    name,
+    symbol,
+  }));
 
   const onSubmit = (formData) => {
-    getConversion(formData);
+    setGetConversionParams(formData);
   };
 
   return (
@@ -80,28 +82,29 @@ const exchange = () => {
             <Input value={value} onChange={onChange} type="number" placeholder="Insert amount" autoComplete="off" />
           )}
         />
+        {errors.amount && <span className="text-red-700 text-md">{errors.amount.message}</span>}
         <label>From</label>
         <Controller
-          defaultValue={`${currencySymbols[36]}: ${nameSymbols[36]}`}
+          defaultValue={currencies?.[36].symbol}
           name="from"
           control={control}
           render={({ field: { value, onChange } }) => (
             <Select value={value} onChange={onChange}>
-              {currencySymbols.map((symbol, index) => (
-                <option key={symbol}>{`${symbol}: ${nameSymbols[index]}`}</option>
+              {currencies.map(({ symbol, name }) => (
+                <option key={symbol} value={symbol}>{`${symbol}: ${name}`}</option>
               ))}
             </Select>
           )}
         />
         <label>To</label>
         <Controller
-          defaultValue={`${currencySymbols[150]}: ${nameSymbols[150]}`}
+          defaultValue={currencies?.[150].symbol}
           name="to"
           control={control}
           render={({ field: { value, onChange } }) => (
             <Select value={value} onChange={onChange}>
-              {currencySymbols.map((symbol, index) => (
-                <option key={symbol}>{`${symbol}: ${nameSymbols[index]}`}</option>
+              {currencies.map(({ symbol, name }) => (
+                <option key={symbol} value={symbol}>{`${symbol}: ${name}`}</option>
               ))}
             </Select>
           )}
@@ -110,9 +113,16 @@ const exchange = () => {
           Convert
         </Button>
       </form>
-      {/* {isFetchingAmount ? <Spinner size="xl" /> : <h2>{dataAcount.result}</h2>} */}
+
+      {isLoadingConversion ? (
+        <Spinner />
+      ) : (
+        conversionEnabled && (
+          <div className="text-center text-3xl mt-8">{`${dataConversion?.result} ${dataConversion?.query?.to}`}</div>
+        )
+      )}
     </LayoutPage>
   );
 };
 
-export default exchange;
+export default Exchange;
