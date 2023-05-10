@@ -5,7 +5,7 @@ import Button from "../components/button";
 import Spinner from "../components/spinner";
 
 import useGetSymbols from "../lib/hooks/useGetSymbols";
-import useGetConversion from "../lib/hooks/useGetConversion";
+import getConversion from "../services/getConversion";
 
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
@@ -20,7 +20,9 @@ const schema = z.object({
 });
 
 const Exchange = () => {
-  const [getConversionParams, setGetConversionParams] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [dataConversion, setDataConversion] = useState(null);
+  const [errorConversion, setErrorConversion] = useState(null);
 
   const {
     isLoading: isLoadingCurrency,
@@ -28,11 +30,6 @@ const Exchange = () => {
     isError: isErrorCurrency,
     error: errorCurrency,
   } = useGetSymbols();
-
-  const conversionEnabled = !!getConversionParams;
-  const { data: dataConversion, isLoading: isLoadingConversion } = useGetConversion(getConversionParams, {
-    enabled: Boolean(getConversionParams),
-  });
 
   const {
     handleSubmit,
@@ -63,8 +60,17 @@ const Exchange = () => {
     symbol,
   }));
 
-  const onSubmit = (formData) => {
-    setGetConversionParams(formData);
+  const onSubmit = async (formData) => {
+    setIsLoading(true);
+
+    try {
+      const dataConversion = await getConversion(formData);
+      setDataConversion(dataConversion);
+    } catch (error) {
+      setErrorConversion(error.message);
+    } finally {
+      setIsLoading(false); // Establecer isLoading a false
+    }
   };
 
   return (
@@ -114,13 +120,14 @@ const Exchange = () => {
         </Button>
       </form>
 
-      {isLoadingConversion ? (
+      {isLoading ? (
         <Spinner />
       ) : (
-        conversionEnabled && (
+        dataConversion && (
           <div className="text-center text-3xl mt-8">{`${dataConversion?.result} ${dataConversion?.query?.to}`}</div>
         )
       )}
+      {errorConversion && <div className="text-red-700 text-md">{errorConversion}</div>}
     </LayoutPage>
   );
 };
