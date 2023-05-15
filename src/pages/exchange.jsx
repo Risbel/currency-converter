@@ -69,7 +69,7 @@ const Exchange = () => {
     } catch (error) {
       setErrorConversion(error.message);
     } finally {
-      setIsLoading(false); // Establecer isLoading a false
+      setIsLoading(false);
     }
   };
 
@@ -95,7 +95,7 @@ const Exchange = () => {
           name="from"
           control={control}
           render={({ field: { value, onChange } }) => (
-            <Select value={value} onChange={onChange}>
+            <Select size="lg" value={value} onChange={onChange}>
               {currencies.map(({ symbol, name }) => (
                 <option key={symbol} value={symbol}>{`${symbol}: ${name}`}</option>
               ))}
@@ -108,24 +108,20 @@ const Exchange = () => {
           name="to"
           control={control}
           render={({ field: { value, onChange } }) => (
-            <Select value={value} onChange={onChange}>
+            <Select size="lg" value={value} onChange={onChange}>
               {currencies.map(({ symbol, name }) => (
                 <option key={symbol} value={symbol}>{`${symbol}: ${name}`}</option>
               ))}
             </Select>
           )}
         />
-        <Button type="submit" className="mt-4">
-          Convert
-        </Button>
+        <div className="py-8">
+          <Button isLoading={isLoading}>Convert</Button>
+        </div>
       </form>
 
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        dataConversion && (
-          <div className="text-center text-3xl mt-8">{`${dataConversion?.result} ${dataConversion?.query?.to}`}</div>
-        )
+      {dataConversion && (
+        <div className="text-center text-3xl">{`${dataConversion?.result} ${dataConversion?.query?.to}`}</div>
       )}
       {errorConversion && <div className="text-red-700 text-md">{errorConversion}</div>}
     </LayoutPage>

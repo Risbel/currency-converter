@@ -10,7 +10,7 @@ const SectionContainer = ({ children }) => {
 };
 
 const Store = () => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <LayoutPage>
@@ -21,8 +21,8 @@ const Store = () => {
         <Button disabled>Push me</Button>
         <Button size="sm">Push me</Button>
         <Button size="lg">Push me</Button>
-        <Button isLoading={loading} onClick={() => setLoading((prev) => !prev)}>
-          {loading ? "Loading..." : "Dynamic Button. Click Me!!!"}
+        <Button isLoading={isLoading} onClick={() => setIsLoading((prev) => !prev)}>
+          {isLoading ? "Loading..." : "Dynamic Button. Click Me!!!"}
         </Button>
       </SectionContainer>
 
